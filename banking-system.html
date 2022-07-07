@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Banking System</title>
+</head>
+
+<body>
+    <main class="w-3/4 mx-auto">
+        <h1 class="text-4xl text-center mt-12 font-semibold">Welcome to my baap er <span
+                class="font-bold text-yellow-400">Mooooooney</span> <span class="text-red-500">!</span>
+        </h1>
+
+        <!-- create a banking system grid column -->
+        <section class="grid grid-cols-3 gap-4 mt-8">
+            <!-- Deposit container  -->
+            <div class="text-center bg-blue-200 p-8 rounded-md">
+                <h2 class="text-3xl">Deposit</h2>
+                <h1 class="text-6xl font-semibold">$<span id="deposit-total">00</span> </h1>
+            </div>
+            <!-- Withdraw container  -->
+            <div class="text-center bg-yellow-200 p-8 rounded-md">
+                <h2 class="text-3xl">Withdraw</h2>
+                <h1 class="text-6xl font-semibold">$<span id="withdraw-total">00</span> </h1>
+            </div>
+            <!-- Balance container  -->
+            <div class="text-center bg-green-200 p-8 rounded-md">
+                <h2 class=" text-3xl">Balance</h2>
+                <h1 class="text-6xl font-semibold">$<span id="balance-total">200</span> </h1>
+            </div>
+        </section>
+        <!-- Deposit and Withdraw user form  -->
+        <section class="grid grid-cols-2 gap-4 mt-12">
+            <!-- Deposit user amount value  -->
+            <div class="text-center bg-purple-300 p-8 rounded-md">
+                <h1 class="text-2xl">Deposit Amount</h1>
+                <input id="new-deposit-input" class="w-3/4 rounded-md mt-4 px-2 border-2 border-red-300"
+                    placeholder="Deposite Money Value" type="text">
+                <br>
+                <button id="deposit-button"
+                    class="bg-green-600 rounded-md text-white px-4 py-1 text-2xl mt-3 font-semibold border-2 border-red-300">Deposit</button>
+            </div>
+            <!-- Deposit user amount value  -->
+            <div class="text-center bg-pink-300 p-8 rounded-md">
+                <h1 class="text-2xl">Withdraw Amount</h1>
+                <input id="new-withdraw-input" class="w-3/4 rounded-md mt-4 px-2 border-2 border-red-300"
+                    placeholder="Withdraw Money Value" type="text">
+                <br>
+                <button id="withdraw-button"
+                    class="bg-yellow-400 rounded-md text-white px-4 py-1 text-2xl mt-3 font-semibold border-2 border-red-300">Withdraw</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // get user input field value using function
+        function getInputFieldValue(newInputFieldId) {
+            const newInputField = document.getElementById(newInputFieldId);
+            const newInputFieldText = newInputField.value;
+            const newInputFieldFloat = parseFloat(newInputFieldText);
+            newInputField.value = '';
+            return newInputFieldFloat;
+        }
+
+        //get total field value using function
+        function getTotalFieldValue(totalFieldValue) {
+            const totalField = document.getElementById(totalFieldValue);
+            const totalFieldText = totalField.innerText;
+            const totalFieldFloat = parseFloat(totalFieldText);
+            return totalFieldFloat;
+        }
+
+        //Set total value in total field
+        function setTotalFieldValue(totalFieldId, inputValue) {
+            const totalField = document.getElementById(totalFieldId);
+            const totalFieldValue = getTotalFieldValue(totalFieldId) + inputValue;
+            totalField.innerText = totalFieldValue;
+        }
+        function sumCurrentBalanceValue(balanceTotalFieldId, inputValue) {
+            const totalField = document.getElementById(balanceTotalFieldId);
+            totalField.innerText = getTotalFieldValue(balanceTotalFieldId) + inputValue;
+        }
+
+        function subCurrentBalanceValue(balanceTotalFieldId, inputValue) {
+            const totalField = document.getElementById(balanceTotalFieldId);
+            totalField.innerText = getTotalFieldValue(balanceTotalFieldId) - inputValue;
+        }
+
+        // for deposite ammounts
+        document.getElementById('deposit-button').addEventListener('click', function () {
+            //get deposit input field
+            const depositValue = getInputFieldValue('new-deposit-input');
+
+            if (depositValue > 0) {
+                //set deposit total field
+                setTotalFieldValue('deposit-total', depositValue);
+
+                //Update current balance
+                sumCurrentBalanceValue('balance-total', depositValue);
+            }
+        });
+
+        //for withdraw ammounts
+        document.getElementById('withdraw-button').addEventListener('click', function () {
+            //get withdraw input field
+            const withdrawValue = getInputFieldValue('new-withdraw-input');
+
+            if (withdrawValue > 0 && withdrawValue <= getTotalFieldValue('balance-total')) {
+                //sum withdraw total
+                setTotalFieldValue('withdraw-total', withdrawValue);
+
+                //Update current Balance 
+                subCurrentBalanceValue('balance-total', withdrawValue);
+            }
+        });
+    </script>
+</body>
+
+</html>
